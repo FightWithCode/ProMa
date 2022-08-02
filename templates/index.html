@@ -59,44 +59,44 @@
         editor.session.setMode(new PHPLaravelMode());
     </script>
     <script>
-        $('.folders').on('click', function(){
-            root_folder = '{{project_name}}'
-            request_folder = $(this).attr('folder-name')
-            $.ajax({
-                url : location.origin + "/dashboard/folder-data/" + root_folder + ,
-                type: 'get',
-                dataType: "json",
-                contentType: 'application/json; charset=utf-8',
-                headers: { 'Authorization': 'Token ' + localStorage.getItem('user-token') },
-                success : function (data) {
-                    t.clear()
-                    for (var i in data.data) {
-                        t.row.add( [
-                            '<tr id=${i}>' + `${data.data[i].serial_no}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].machine_number}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].machine_group}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].code}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].model}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].position}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].suspended_start_date}` + '</tr>',
-                            '<tr id=${i}>' + `${data.data[i].suspended_end_date}` + '</tr>',
-                            `<a class="mt-1" href="{% url 'machines:get-single-machine' %}?machine=${data.data[i].id}"><i class="fas fa-edit"></i></a><a class="mt-1 ml-2" onclick="deleteMachine(${data.data[i].id})" data-toggle="modal" data-target="#ConfirmDelete"><i class="fas fa-trash-alt"></i></a>`,
-                        ] ).draw( false );
-                    }
-                },
-                statusCode: {
-                    404: function() {
-                        console.log("Error 404")
-                    },
-                    401: function() {
-                        window.location.replace("/login"); 
-                    },
-                },
-                error: function () {
-                    console.log("Error")
-                },
-            });
-        })
+        // $('.folders').on('click', function(){
+        //     root_folder = '{{project_name}}'
+        //     request_folder = $(this).attr('folder-name')
+        //     $.ajax({
+        //         url : location.origin + "/dashboard/folder-data/" + root_folder + request_folder,
+        //         type: 'get',
+        //         dataType: "json",
+        //         contentType: 'application/json; charset=utf-8',
+        //         headers: { 'Authorization': 'Token ' + localStorage.getItem('user-token') },
+        //         success : function (data) {
+        //             t.clear()
+        //             for (var i in data.data) {
+        //                 t.row.add( [
+        //                     '<tr id=${i}>' + `${data.data[i].serial_no}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].machine_number}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].machine_group}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].code}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].model}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].position}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].suspended_start_date}` + '</tr>',
+        //                     '<tr id=${i}>' + `${data.data[i].suspended_end_date}` + '</tr>',
+        //                     `<a class="mt-1" href="{% url 'machines:get-single-machine' %}?machine=${data.data[i].id}"><i class="fas fa-edit"></i></a><a class="mt-1 ml-2" onclick="deleteMachine(${data.data[i].id})" data-toggle="modal" data-target="#ConfirmDelete"><i class="fas fa-trash-alt"></i></a>`,
+        //                 ] ).draw( false );
+        //             }
+        //         },
+        //         statusCode: {
+        //             404: function() {
+        //                 console.log("Error 404")
+        //             },
+        //             401: function() {
+        //                 window.location.replace("/login"); 
+        //             },
+        //         },
+        //         error: function () {
+        //             console.log("Error")
+        //         },
+        //     });
+        // })
     </script>
 </body>
 
