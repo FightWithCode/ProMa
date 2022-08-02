@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ProMa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha512-3M00D/rn8n+2ZVXBO9Hib0GKNpkm8MSUU/e2VNthDyBYxKWG+BftNYYcuEjXlyrSO637tidzMBXfE7sQm0INUg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+    </style>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div class="main">
+        <div class="left">
+            <div class="left_header">
+                <h1>{{project_name}}</h1>
+            </div>
+            {% for i in project_folders %}
+                <h3 class="folders" folder-name={{i.name}}><i class="fas fa-folder"></i> {{i.name}}</h3>
+            {% endfor %}
+            {% for i in project_files %}
+                <h3 class="files" file-name={{i.name}}><i class="fas fa-file" style="color:gray"></i> {{i.name}}<span style="float:right">{{i.size}} Bytes</span></h3>
+            {% endfor %}
+        </div>
+        <div class="right">
+            <div class="right_header">
+                <h1>Server Name</h1>
+                <h1>File Name</h1>
+                <div class="right_header_right">
+
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="user">
+                        <img src="{% static 'images/user.png' %}" alt="photo">
+                        <h2>Username</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="outer_right_data" id="editor">
+                <div class="right_data">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'ace-assets/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'ace-assets/theme-twilight.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script src="{% static 'ace-assets/mode-php_laravel_blade.js' %}" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/twilight");
+        var PHPLaravelMode = ace.require("ace/mode/php_laravel_blade").Mode;
+        editor.session.setMode(new PHPLaravelMode());
+    </script>
+    <script>
+        $('.folders').on('click', function(){
+            root_folder = '{{project_name}}'
+            request_folder = $(this).attr('folder-name')
+            $.ajax({
+                url : location.origin + "/dashboard/folder-data/" + root_folder + ,
+                type: 'get',
+                dataType: "json",
+                contentType: 'application/json; charset=utf-8',
+                headers: { 'Authorization': 'Token ' + localStorage.getItem('user-token') },
+                success : function (data) {
+                    t.clear()
+                    for (var i in data.data) {
+                        t.row.add( [
+                            '<tr id=${i}>' + `${data.data[i].serial_no}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].machine_number}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].machine_group}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].code}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].model}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].position}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].suspended_start_date}` + '</tr>',
+                            '<tr id=${i}>' + `${data.data[i].suspended_end_date}` + '</tr>',
+                            `<a class="mt-1" href="{% url 'machines:get-single-machine' %}?machine=${data.data[i].id}"><i class="fas fa-edit"></i></a><a class="mt-1 ml-2" onclick="deleteMachine(${data.data[i].id})" data-toggle="modal" data-target="#ConfirmDelete"><i class="fas fa-trash-alt"></i></a>`,
+                        ] ).draw( false );
+                    }
+                },
+                statusCode: {
+                    404: function() {
+                        console.log("Error 404")
+                    },
+                    401: function() {
+                        window.location.replace("/login"); 
+                    },
+                },
+                error: function () {
+                    console.log("Error")
+                },
+            });
+        })
+    </script>
+</body>
+
+</html>

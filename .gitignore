@@ -1,0 +1,8 @@
+db.sqlite3
+db.sqlite3*
+dashboard/migrations/
+dashboard/__pycache__/
+.env
+ProMa/migrations/
+ProMa/__pycache__/
+env/

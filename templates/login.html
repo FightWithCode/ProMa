@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <title>Login - ProMa</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
+    </style>
+    <link rel="stylesheet", href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="main">
+        <div class="card">
+            <h1>LogIn</h1>
+            <form action="" method="POST" >
+                {% csrf_token %}
+                <fieldset>
+                    <legend>ID</legend>
+                    <input type="text" placeholder="ID" name="username">
+                </fieldset>
+                <fieldset>
+                    <legend>Password</legend>
+                    <div id="pass">
+                        <input type="password" placeholder="Password" id="pass-password" name="password">
+                        <span><i class="fa-solid fa-lock" id="pass-lock"></i></span>
+                        <span><i class="fa-solid fa-unlock" id="pass-unlock"></i></span>
+                    </div>
+                </fieldset>
+                <input type="submit" id="button">
+            </form>
+        </div>
+    </div>
+    <script>
+        const lock = document.getElementById('pass-lock');
+        const unlock = document.getElementById('pass-unlock');
+        const pass = document.getElementById('pass-password');
+
+        lock.addEventListener('click', function(){
+            lock.style.display='none';
+            unlock.style.display='block';
+            pass.setAttribute("type","text");
+        });
+        unlock.addEventListener('click', function(){
+            unlock.style.display='none';
+            lock.style.display='block';
+            pass.setAttribute("type","password");
+        });
+    </script>
+</body>
+</html>
