@@ -29,6 +29,8 @@ class GetFolderData(APIView):
             res = ftp_client.listdir_attr()
             for i in res:
                 print(i)
+            ftp_client.close()
+            ssh_client.close()
             Response(response, status=status.HTTP_200_OK)
         except Exception as e:
             response['msg'] = 'error'
