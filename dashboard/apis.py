@@ -27,11 +27,31 @@ class GetFolderData(APIView):
             ftp_client.chdir(root_folder)
             ftp_client.chdir(request_folder)
             res = ftp_client.listdir_attr()
+            project_folders = []
+            project_files = []
             for i in res:
-                print(i)
+                temp_dict = {}
+                temp_dict['name'] = i.filename
+                temp_dict['size'] = i.st_size
+                temp_dict['time'] = i.st_atime
+                mode = i.st_mode
+                
+                if S_ISDIR(mode):
+                    temp_dict['type'] = 'folder'
+                    project_folders.append(temp_dict)
+                elif S_ISREG(mode):
+                    temp_dict['type'] = 'file'
+                    project_files.append(temp_dict)
+                else:
+                    print("Unknown!")
             ftp_client.close()
             ssh_client.close()
-            Response(response, status=status.HTTP_200_OK)
+            response = {
+                "project_name": root_folder,
+                "project_folders": project_folders,
+                "project_files": project_files
+            }
+            return Response(response, status=status.HTTP_200_OK)
         except Exception as e:
             response['msg'] = 'error'
             response['error'] = str(e)

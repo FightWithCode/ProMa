@@ -1,3 +1,8 @@
 from django.contrib import admin
+from .models import Server, Profile, Project, AssignedFile, Log
 
-# Register your models here.
+
+admin.site.register(Server)
+admin.site.register(Project)
+admin.site.register(AssignedFile)
+admin.site.register(Log)

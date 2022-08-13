@@ -1,0 +1,37 @@
+<div class="main">
+    <div class="left">
+        <div class="left_header">
+            <h1>{{project_name}}</h1>
+        </div>
+        {% for i in project_folders %}
+            <div class='folder-container' id="{{i.name}}">
+                <h3 class="folders" folder-name={{i.name}}><i class="fas fa-folder"></i> {{i.name}}</h3>
+            </div>
+        {% endfor %}
+        {% for i in project_files %}
+            <h3 class="files" file-name={{i.name}}><i class="fas fa-file" style="color:gray"></i> {{i.name}}<span style="float:right">{{i.size}} Bytes</span></h3>
+        {% endfor %}
+    </div>
+    <div class="right">
+        <div class="right_header">
+            <h1>Server Name</h1>
+            <h1>File Name</h1>
+            <div class="right_header_right">
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider round"></span>
+                </label>
+                <div class="user">
+                    <img src="{% static 'images/user.png' %}" alt="photo">
+                    <h2>Username</h2>
+                </div>
+            </div>
+        </div>
+        <div class="outer_right_data" id="editor">
+            <div class="right_data">
+                
+            </div>
+        </div>
+    </div>
+</div>
