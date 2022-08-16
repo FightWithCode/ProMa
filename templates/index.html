@@ -94,57 +94,35 @@
         $('.files').on('click', function(){
             file_name = $(this).attr("file-name")
             tabs = $('.tabs-container h3')
+            $('.tabs-container h3').css('background-color', 'white')
+            loop = false
             $.each(tabs, function(i, obj){
-                if ($(this).attr('file-name') === file_name){
+                if ($(this).attr('id') === file_name){
+                    loop = true
                     $.each(code_session, function(i, obj){
-                        if ($(this).attr('file-name') === file_name){
+                        if ($(this).attr('file_name') === file_name){
+                            obj.session.setMode(new HTMLMode())
                             editor.setSession(obj.session);
-                            editor.session.setMode(new HTMLMode());
                         }
                     })
-                    editor.setSession(obj.session);
-                    editor.session.setMode(new HTMLMode());
-                }
-                else{
-                    $.each(code_session, function(i, obj){
-                        if (obj.file_name === file_name){
-                            editor.setSession(obj.session);
-                            editor.session.setMode(new HTMLMode());
-                        }
-                    })
+
+                    $(this).css('background-color', 'crimson')
                 }
             })
-            // if ()
-            $('.tabs-container').append(
-                `<h3 id='header${$(this).attr("file-name")}'>${$(this).attr("file-name")}</h3>
-                `
-            )
-            $.each(code_session, function(i, obj){
-                if (obj.file_name === file_name){
-                    editor.setSession(obj.session);
-                    editor.session.setMode(new HTMLMode());
-                }
-            })
-            // $('.tabs-container').append(
-            //     `<h3 id='header${$(this).attr("file-name")}'>${$(this).attr("file-name")}</h3>
-            //     `
-            // )
-            // $('.code-container').append(`
-            //     <div class="right_data" id="${$(this).attr('file-name')}">
-                            
-            //     </div>  
-            // `)
-            // $('.code-container div').hide()
-            // $('.code-container div').each(function() {
-            //     if ($(this).attr("id") === file_name){
-            //         $(this).show()
-            //     }
-            // })
-            // $(`#${$(this).attr('file-name')}`).toggle()
-            
-            // editor.setSession(js);
-            
-            // editor.session.setValue($(this).attr('content'))
+            if (loop === false){
+                $.each(code_session, function(i, obj){
+                    if (obj.file_name === file_name){
+                        obj.session.setMode(new HTMLMode());
+                        editor.setSession(obj.session);
+                    }
+                })
+                $('.tabs-container').append(
+                    $('<h3/>')
+                    .attr('id', file_name)
+                    .css('background-color', 'crimson')
+                    .text(file_name)
+                )
+            }
         })
         // Code to get files and render on page
         // $('.folders').on('click', function(){
