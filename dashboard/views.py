@@ -4,9 +4,17 @@ from django.contrib.auth import authenticate, login
 import paramiko
 import pysftp
 from stat import S_ISDIR, S_ISREG
-from .models import AssignedFile
+from .models import AssignedFile, ConnectionHistory
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from channels.db import database_sync_to_async
+
+
+# @database_sync_to_async
+# def update_user_status(self, user, device_id, status):
+#     return ConnectionHistory.objects.get_or_create(
+#         user=user, device_id=device_id,
+#     ).update(status=status)
 
 
 ip='184.168.104.58'
@@ -107,6 +115,7 @@ def IndexView(request):
 def LoginView(request):
     if request.user.is_authenticated:
         redirect('/')
+        
     else:
         if request.method == 'POST':
             username = request.POST.get('username')

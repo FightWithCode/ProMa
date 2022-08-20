@@ -15,7 +15,8 @@
 <body>
     <div class="main">
         <div class="card">
-            <h1>LogIn</h1>
+            {% comment %} <h1>LogIn</h1> {% endcomment %}
+            <img src="{% static 'images/logo.png' %}" width="250px">
             <form action="" method="POST" >
                 {% csrf_token %}
                 <fieldset>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Server, Profile, Project, AssignedFile, Log
+from .models import Server, Project, AssignedFile, Log
 
 
 admin.site.register(Server)

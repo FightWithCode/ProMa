@@ -1,5 +1,10 @@
+from re import M
 from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+from django.conf import settings
+from channels.db import database_sync_to_async
+
 
 ACCESS_TYPES = (
     ('edit', 'edit'),
@@ -7,8 +12,14 @@ ACCESS_TYPES = (
 )
 
 
-class Profile(models.Model):
-    last_logout = models.DateTimeField(auto_now_add=True)
+# class Profile(models.Model):
+#     user = models.Fore
+#     last_logout = models.DateTimeField(auto_now_add=True)
+#     @database_sync_to_async
+#     def update_user_status(self, user, device_id, status):
+#         return ConnectionHistory.objects.get_or_create(
+#             user=user, device_id=device_id,
+#         ).update(status=status)
 
 
 class Server(models.Model):
@@ -48,3 +59,30 @@ class AssignedFile(models.Model):
 
 class Log(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+class ConnectionHistory(models.Model):
+    ONLINE = 'online'
+    OFFLINE = 'offline'
+    STATUS = (
+        (ONLINE, 'On-line'),
+        (OFFLINE, 'Off-line'),
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE
+    )
+    device_id = models.CharField(max_length=255)
+    # device_id = models.CharField(max_lenght=255)
+    # status = models.CharField(max_lenght=255, choices=STATUS, default=ONLINE)
+    status = models.CharField(max_length=255, choices=STATUS, default=ONLINE)
+    first_login = models.DateTimeField(auto_now_add=True)
+    last_echo = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "device_id"),)
+
+
+    @database_sync_to_async
+    def update_user_status(self, user, device_id, status):
+        return ConnectionHistory.objects.get_or_create(
+            user=user, device_id=device_id,
+        ).update(status=status)
