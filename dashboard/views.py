@@ -5,6 +5,8 @@ import paramiko
 import pysftp
 from stat import S_ISDIR, S_ISREG
 from .models import AssignedFile
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
 
 
 ip='184.168.104.58'
@@ -49,12 +51,29 @@ password='Xyz@1217'
 #     ssh_client.close()
 #     return render(request, 'index.html', context)
 
+@login_required
+def AdminIndexView(request):
+    context = {}
+    if request.user.is_superuser:
+        dev_data = []
+        for user in User.objects.filter(is_superuser=False):
+            temp_dict = {}
+            temp_dict['user'] = user
+            temp_dict['assigned_files'] = AssignedFile.objects.filter(user=user)
+            dev_data.append(temp_dict)
+        context =  {
+            'developers': dev_data
+        }
+        return render(request, 'admin-dashboard.html', context)
+    else:
+        return redirect('dashboard:index')
+
 
 @login_required
 def IndexView(request):
     context = {}
     if request.user.is_superuser:
-        pass
+        return redirect('dashboard:admin-dashboard')
     else:
         assigned_files = AssignedFile.objects.filter(user=request.user)
         # Code to read file content

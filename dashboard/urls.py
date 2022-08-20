@@ -9,6 +9,7 @@ app_name = 'dashboard'
 urlpatterns = [
     # Views
     path('', views.IndexView, name='index'),
+    path('admin-dashboard', views.AdminIndexView, name='admin-dashboard'),
     path('login', views.LoginView, name='login'),
 
     # APIs

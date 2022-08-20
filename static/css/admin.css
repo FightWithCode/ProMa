@@ -1,0 +1,276 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  height: 100vh;
+}
+
+.main-left {
+  /* border: 1px solid black; */
+  /* background-color: green; */
+  width: 20%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.main-links {
+  overflow-y: scroll;
+  height: 90vh;
+}
+
+.main-links ul {
+  display: block;
+  list-style: none;
+  padding: 0 1.5rem;
+}
+
+.main-links ul li a {
+  color: #fff;
+  box-shadow: 0 5px 7px -1px rgb(111 217 67 / 30%);
+
+  border-radius: 12px;
+  margin-left: 15px;
+  margin-right: 15px;
+  padding: 7px 10px 7px 7px;
+  display: block;
+  margin: 7px 0;
+  text-decoration: none;
+  color: black;
+}
+
+.main-links ul li a:hover {
+  background: linear-gradient(141.55deg, #6fd943 3.46%, #6fd943 99.86%), #6fd943;
+  color: white;
+}
+
+.main-links::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 20px;
+}
+
+/* Track */
+.main-links::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 20px;
+}
+
+/* Handle */
+.main-links::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 20px;
+}
+
+/* Handle on hover */
+.main-links::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.main-icon i {
+  margin-right: 15px;
+  border-radius: 12px;
+  height: 35px;
+  width: 35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  color: #000;
+  background-color: #fff;
+  box-shadow: -3px 4px 23px rgb(0 0 0 / 10%);
+}
+.logo {
+  padding: 1rem;
+  text-align: center;
+}
+
+/* right section */
+
+.main-right {
+  position: relative;
+  margin-left: 20%;
+}
+
+.right-header-img img {
+  width: 30px;
+  border-radius: 50%;
+}
+.right-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem;
+}
+
+.user-name {
+  border: 1px solid black;
+  border-radius: 7px;
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  padding: 4px;
+}
+.heading-messages {
+  margin-right: 5px;
+}
+.heading_language_and_chats a {
+  border: 1px solid black;
+  border-radius: 7px;
+  text-decoration: none;
+  color: black;
+  font-weight: 600;
+  padding: 8px;
+  position: relative;
+}
+.heading-message-counter {
+  left: 18px;
+  background-color: red;
+  color: #fff;
+  position: absolute;
+  border-radius: 50%;
+  height: 16px;
+  width: 16px;
+  top: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 9px;
+}
+
+.main-content {
+  margin: 2rem;
+}
+.main-cards {
+  display: flex;
+  /* justify-content: center; */
+  gap: 1rem;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.card {
+  width: 23%;
+}
+.card-avtar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  height: 30px;
+  padding: 21px;
+  width: 30px;
+  background-color: red;
+  border-radius: 6px;
+  color: white;
+}
+
+/* table css start */
+.right_data {
+  height: 80vh;
+  /* border: 1px solid green; */
+  /* width: 90%;
+      margin-top: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center; */
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+}
+
+caption {
+  font-weight: bold;
+  font-size: 24px;
+  text-align: left;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+thead {
+  background-color: #333;
+  color: white;
+}
+
+thead {
+  background-color: #333;
+  color: white;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 2%;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #eee;
+}
+
+.date,
+.time {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+}
+
+.vbtn {
+  padding: 3px 20px;
+  background-color: #0c0c0c;
+  color: white;
+  border: none;
+  margin-right: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* table css end */
+
+@media only screen and (max-width: 600px) {
+  .card {
+    width: 45%;
+  }
+  .main-left {
+    width: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+  .burger-menu {
+    display: block;
+  }
+  .main-right {
+    margin-left: 0;
+  }
+  .right-header {
+    margin: 5px;
+  }
+  .main-content {
+    margin: 10px;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .card {
+    width: 45%;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .card {
+    width: 23%;
+  }
+  .burger-menu {
+    display: none;
+  }
+}
