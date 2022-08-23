@@ -35,3 +35,87 @@
         </div>
     </div>
 </div>
+
+<div class="main">
+    <div class="main-left" id="main-left">
+      <div class="logo">
+        <!-- <img src="logo.png" alt="logo" width="100%" /> -->
+        <h1>COBRA</h1>
+      </div>
+      <div class="main-links">
+        <ul>
+          {% for dev in developers %}
+            <li class="main-item" id='{{dev.user.username}}'>
+              <a href="#" class="left-link">
+                <span class="main-icon">
+                  <i class="fa fa-user-o" aria-hidden="true"></i></span
+                ><span class="main-text">{{dev.user.get_full_name}}{% if dev.online %}(Online){% else %}(Offline){% endif %}</span></a
+              >
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="main-right">
+      <div class="right-header">
+        <div class="" style="display:flex; align-items:center; justify-content:center;">
+          <div class="burger-menu" id="burgermenu" style="margin-right: 1em; font-size: 1.5rem;"><i class="fa fa-bars" aria-hidden="true"></i></div>
+          <a href="#" class="user-name">
+            <span class="right-header-img">
+              <img
+                src="https://demo.rajodiya.com/salesy-saas/storage/upload/profile/avtar2.jpg"
+                alt=""
+              />
+            </span>
+            <span>Hi, {{request.user.get_full_name}}</span>
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </a>
+        </div>
+        <div class="heading_language_and_chats">
+          <a href="#" class="heading-messages">
+            <i class="fa fa-commenting-o" aria-hidden="true"></i>
+            <span class="heading-message-counter">1</span>
+          </a>
+          {% comment %} <a href="">
+            <i class="fa fa-globe" aria-hidden="true"></i>
+            <span>EN</span>
+            <i class="fa fa-angle-down" aria-hidden="true"></i>
+          </a> {% endcomment %}
+        </div>
+      </div>
+      <div class="main-content">
+        <div class="content-heading">
+          <h1>Dashboard</h1>
+        </div>
+        <div class="outer_right_data">
+          <div class="right_data">
+            <table>
+              <thead>
+                <tr>
+                  <th>list of acess files</th>
+                  <th>time/date</th>
+                  <th>Action</th>
+                </tr>
+                <tr></tr>
+              </thead>
+              {% for dev in developers %}
+                <tbody id="{{dev.user.username}}-body" class='hidden'>
+                  {% for assigned_file in dev.assigned_files %}
+                      <tr>
+                          <td>{{assigned_file.file_path}}</td>
+                          <td>{{assigned_file.access_given_on}}</td>
+                          <td>
+                            <button class="vbtn">Edit</button>
+                            <button class="vbtn">Logs</button>
+                          </td>
+                      </tr>
+                  {% endfor %}
+                </tbody>
+              {% endfor %}
+              
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

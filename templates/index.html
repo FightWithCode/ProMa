@@ -10,68 +10,54 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap');
     </style>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/style.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}" />
 </head>
 
 <body>
-    {% if user.is_superuser %} 
-        <div class="main">
-            <div class="left">
-                <div class="left_header">
-                    <h1>Developer List</h1>
-                </div>
+    <div class="main">
+        <div class="main-left" id="main-left">
+            <div class="logo">
+              <!-- <img src="logo.png" alt="logo" width="100%" /> -->
+              <h1>COBRA</h1>
             </div>
-            <div class="right">
-                <div class="right_header">
-                    <h3>Other Tasks</h3>
-                </div>
-                <div class="outer_right_data" id="editor">
-                    <div class="right_data">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="main">
-            <div class="left">
-                <div class="left_header">
-                    <h2>Assigned Files List</h2>
-                </div>
+            <div class="main-links">
+              <ul>
                 {% for i in files %}
-                    <h3 class="files" file-name='{{i.file_name}}' content='{{i.content}}'><i class="fas fa-file" style="color:gray"></i> {{i.file_name}}<span style="float:right">{{i.size}} Bytes</span></h3>
+                  <h3 class="files" file-name='{{i.file_name}}' file-path="{{i.file_path}}" content='{{i.content}}'><i class="fas fa-file" style="color:gray"></i> {{i.file_name}}<span style="float:right">{{i.size}} Bytes</span></h3>
                 {% endfor %}
-            </div>
-            <div class="right">
-                <div class="right_header">
-                    
-                </div>
-                <div class="outer_right_data">
-                    <div class='tabs-container'>
-                        <!-- <h3 id='1'>File 1</h3>
-                        <h3 id='2'>File 2</h3>
-                        <h3 id='3'>File 3</h3> -->
-                    </div>
-                    <div class='code-container'>
-                        <div class="right_data" id="editor">
-                            
-                        </div>
-                        <!-- <div class="right_data" id='code-1'></div>  
-                        <div class="right_data" id='code-2'></div>   -->
-                        <!-- <div class="right_data" id='code-3'></div>   -->
-                    </div>
-                    <!--
-                    <div class='tab-container' id='tab-${$(this).attr('file-name')}'>
-                        <h4>${$(this).attr('file-name')}</h3>
-                        <div class="right_data" id="${$(this).attr('file-name')}">
-                        
-                        </div>    
-                    </div>
-                    -->
-                </div>
+              </ul>
             </div>
         </div>
-    {% endif %}
+        <div class="main-right">
+          {% csrf_token %}
+            <div class="right_header">
+              <div class="" style="display:flex; align-items:center; justify-content:space-between;padding:15px 0px;background-color: #c5c5c5;">
+                <div class="burger-menu" id="burgermenu" style="margin-right: 1em; font-size: 1.5rem;"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                <a href="#" class="user-name">
+                  <span class="right-header-img">
+                    <img
+                      src="https://demo.rajodiya.com/salesy-saas/storage/upload/profile/avtar2.jpg"
+                      alt=""
+                    />
+                  </span>
+                  <span>Hi, {{request.user.get_full_name}}</span>
+                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            <div class="outer_right_data">
+                <div class='tabs-container'>
+                </div>
+                <div class='code-container'>
+                    <div class="right_data" id="editor">
+                        
+                    </div>
+                </div>
+                <div class="save-button">Save this File</div>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="{% static 'ace-assets/ace.js' %}" type="text/javascript" charset="utf-8"></script>
     <script src="{% static 'ace-assets/theme-twilight.js' %}" type="text/javascript" charset="utf-8"></script>
@@ -83,10 +69,12 @@
         var editor = ace.edit('editor');
         var HTMLMode = ace.require("ace/mode/html").Mode;
         editor.session.setMode(new HTMLMode());
+        current_file = null
         code_session = []
         $('.files').each(function(){
             obj = {
                 'file_name': $(this).attr('file-name'),
+                'file_path': $(this).attr('file-path'),
                 'session': ace.createEditSession($(this).attr('content'))
             }
             code_session.push(obj)
@@ -103,10 +91,11 @@
                         if ($(this).attr('file_name') === file_name){
                             obj.session.setMode(new HTMLMode())
                             editor.setSession(obj.session);
+                            current_file = $(this).attr('file_path')
                         }
                     })
 
-                    $(this).css('background-color', 'crimson')
+                    $(this).css('background-color', '#c5c5c5')
                 }
             })
             if (loop === false){
@@ -114,15 +103,49 @@
                     if (obj.file_name === file_name){
                         obj.session.setMode(new HTMLMode());
                         editor.setSession(obj.session);
+                        current_file = obj.file_path
                     }
                 })
                 $('.tabs-container').append(
                     $('<h3/>')
                     .attr('id', file_name)
-                    .css('background-color', 'crimson')
+                    .css('background-color', '#c5c5c5')
                     .text(file_name)
                 )
             }
+        })
+
+        // Save the file
+        $('.save-button').on('click', function(){
+          var code = editor.getValue();
+          data = {
+            'data': code,
+            'file_path': current_file
+          }
+          $.ajax({
+              headers: {
+                  'X-CSRFTOKEN': '{{ csrf_token }}'
+              },
+              url : location.origin + "/save-file",
+              type: 'post',
+              data: data,
+              dataType: "json",
+              // contentType: 'application/json; charset=utf-8',
+              success : function (data) {
+                alert('File Saved!')
+              },
+              statusCode: {
+                  404: function() {
+                      console.log("Error 404")
+                  },
+                  401: function() {
+                      window.location.replace("/login"); 
+                  },
+              },
+              error: function () {
+                  console.log("Error")
+              },
+          });
         })
         // Code to get files and render on page
         // $('.folders').on('click', function(){

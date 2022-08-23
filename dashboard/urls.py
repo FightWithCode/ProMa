@@ -14,4 +14,5 @@ urlpatterns = [
 
     # APIs
     path('folder-data/<str:root_folder>/<str:request_folder>', apis.GetFolderData.as_view(), name='folder-data'),
+    path('save-file', apis.SaveFileView.as_view(), name='savee-file'),
 ]

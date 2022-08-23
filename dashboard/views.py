@@ -8,6 +8,10 @@ from .models import AssignedFile, ConnectionHistory
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from channels.db import database_sync_to_async
+from .models import Profile
+import online_users.models
+from datetime import timedelta
+from django.http import JsonResponse
 
 
 # @database_sync_to_async
@@ -64,10 +68,17 @@ def AdminIndexView(request):
     context = {}
     if request.user.is_superuser:
         dev_data = []
+        user_status = online_users.models.OnlineUserActivity.get_user_activities(timedelta(seconds=60))
+        users = (user for user in  user_status)
         for user in User.objects.filter(is_superuser=False):
             temp_dict = {}
             temp_dict['user'] = user
             temp_dict['assigned_files'] = AssignedFile.objects.filter(user=user)
+            for i in users:
+                if i.user_id:
+                    temp_dict['online'] = True
+                else:
+                    temp_dict['online'] = False
             dev_data.append(temp_dict)
         context =  {
             'developers': dev_data
@@ -97,6 +108,7 @@ def IndexView(request):
                 temp_dict['file_name'] = i.file_path.split('/')[-1]
             except:
                 temp_dict['file_name'] = i.file_path
+            temp_dict['file_path'] = i.file_path
             print('FTP Opened')
             file_obj = ftp_client.file(i.file_path, 'rt')
             attr_obj = ftp_client.lstat(i.file_path)
@@ -114,6 +126,11 @@ def IndexView(request):
 
 def LoginView(request):
     if request.user.is_authenticated:
+        try:
+            profile = Profile.objects.get(user=request.user)
+            profile.update_user_status()
+        except Exception as e:
+            pass
         redirect('/')
         
     else:
@@ -123,5 +140,10 @@ def LoginView(request):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                try:
+                    profile = Profile.objects.get(user=request.user)
+                    profile.update_user_status()
+                except Exception as e:
+                    pass
                 return redirect('dashboard:index')
         return render(request, 'login.html', {})
