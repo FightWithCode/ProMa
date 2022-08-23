@@ -9,6 +9,7 @@ import pysftp
 from stat import S_ISDIR, S_ISREG
 from dashboard.models import AssignedFile, Log, LoggedInUsers
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 
 ip='184.168.104.58'
@@ -27,6 +28,28 @@ class TabCloseView(APIView):
         except Exception as e:
             response['error'] = str(e)
             return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetOnlineStatusView(APIView):
+    def get(self, request):
+        response = {}
+        try:
+            dev_data = []
+            for user in User.objects.filter(is_superuser=False):
+                temp_dict = {}
+                temp_dict['user'] = user.username
+                try:
+                    obj = LoggedInUsers.objects.get(user=user)
+                    temp_dict['status'] = 'Online'
+                except:
+                    temp_dict['status'] = 'Offline'
+                dev_data.append(temp_dict)
+            response['data'] = dev_data
+            return Response(response, status=status.HTTP_200_OK)
+        except Exception as e:
+            response['error'] = str(e)
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
+
 
 class SaveFileView(APIView):
     def post(self, request):

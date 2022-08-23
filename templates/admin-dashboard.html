@@ -102,7 +102,6 @@
                     {% endfor %}
                   </tbody>
                 {% endfor %}
-                
               </table>
             </div>
           </div>
@@ -127,6 +126,30 @@
         $('tbody').hide()
         $(`#${id}-body`).show()
       })
+      setInterval(function() {
+        $.ajax({
+            url: location.origin + "/get-online-status",
+            method: 'GET',
+            dataType: "json",
+            success : function (data) {
+              console.log(data)
+              $.each(data.data, function(i, obj){
+                $(`#${obj.user}-status`).text(`(${obj.status})`)
+              })
+            },
+            statusCode: {
+                404: function() {
+                    console.log("Error 404")
+                },
+                401: function() {
+                    window.location.replace("/login"); 
+                },
+            },
+            error: function () {
+                console.log("Error")
+            },
+        })
+      }, 1000 * 10);
     </script>
   </body>
 </html>
