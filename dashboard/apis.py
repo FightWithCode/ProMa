@@ -1,4 +1,5 @@
 from os import stat
+import re
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.response import Response
@@ -6,7 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 import paramiko
 import pysftp
 from stat import S_ISDIR, S_ISREG
-from dashboard.models import AssignedFile, Log
+from dashboard.models import AssignedFile, Log, LoggedInUsers
+from django.contrib.auth import logout
 
 
 ip='184.168.104.58'
@@ -14,6 +16,17 @@ port=22
 username='s2b46pkx117j'
 password='Xyz@1217'
 
+
+class TabCloseView(APIView):
+    def get(self, request):
+        response = {}
+        try:
+            LoggedInUsers.objects.filter(user=request.user).delete()
+            logout(request)
+            return Response(response, status=status.HTTP_200_OK)
+        except Exception as e:
+            response['error'] = str(e)
+            return Response(response, status=status.HTTP_400_BAD_REQUEST)
 
 class SaveFileView(APIView):
     def post(self, request):

@@ -147,6 +147,16 @@
               },
           });
         })
+
+        // Logout one close
+        $(document).ready(function(){         
+            $(window).on("beforeunload", function(e) {
+                $.ajax({
+                    url: location.origin + "/close-tab",
+                    method: 'GET',
+                })
+            });
+        });
         // Code to get files and render on page
         // $('.folders').on('click', function(){
         //     root_folder = '{{project_name}}'

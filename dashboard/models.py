@@ -1,4 +1,4 @@
-from re import M
+from re import M, U
 from django.db import models
 from django.contrib.auth.models import User
 from django.db import models
@@ -91,3 +91,7 @@ class Log(models.Model):
 
     def __str__(self):
         return 'Log by {} at {}'.format(self.user.username, str(self.saved_time))
+
+
+class LoggedInUsers(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

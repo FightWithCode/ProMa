@@ -39,7 +39,7 @@
                 <a href="#" class="left-link">
                   <span class="main-icon">
                     <i class="fa fa-user-o" aria-hidden="true"></i></span
-                  ><span class="main-text">{{dev.user.get_full_name}}{% if dev.online %}(Online){% else %}(Offline){% endif %}</span></a
+                  ><span class="main-text">{{dev.user.get_full_name}}<i id='{{dev.user.username}}-status'>{% if dev.online %}(Online){% else %}(Offline){% endif %}</i></span></a
                 >
               </li>
             {% endfor %}
